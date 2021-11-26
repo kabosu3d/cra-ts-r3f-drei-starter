@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { Suspense } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF, Environment, OrbitControls } from "@react-three/drei";
+import modelPath from "./ball.glb";
+import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
+function Model() {
+  const gltf = useGLTF(modelPath) as unknown as GLTF;
+  useFrame(() => (gltf.scene.rotation.y += 0.002));
+  return <primitive object={gltf.scene} />;
+}
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Canvas>
+        <OrbitControls />
+        <color attach="background" args={[0x333353]} />
+        <ambientLight />
+        <pointLight position={[10, 10, 10]} />
+        <Suspense fallback={null}>
+          <Environment preset="studio" />
+          <Model />
+        </Suspense>
+      </Canvas>
     </div>
   );
 }
