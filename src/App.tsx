@@ -13,7 +13,9 @@ function Model() {
 function App() {
   return (
     <div className="App">
-      <Canvas>
+      <Canvas 
+        dpr={Math.max(window.devicePixelRatio, 2)}
+      >
         <OrbitControls />
         <color attach="background" args={[0x333353]} />
         <ambientLight />
